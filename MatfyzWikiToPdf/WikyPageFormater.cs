@@ -49,14 +49,6 @@ namespace MatfyzWikiToPdf
                 text4 = text4.Remove(tagStart, tagEnd - tagStart + 4); //+4 => 4 znaky => '&gt '
             }
 
-            ////smazani vsech tabulek, ty by se neprelozili do latexu
-            //while (text4.Contains("{|"))
-            //{
-            //    int tableStart = text4.IndexOf("{|");
-            //    int tableEnd = text4.IndexOf("|}");
-            //    text4 = text4.Remove(tableStart, tableEnd - tableStart + 3); //+3 => 3 znaky => '\} '
-            //}
-
             return text4;
         }
     }
