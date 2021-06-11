@@ -53,7 +53,7 @@ namespace MatfyzWikiToPdf
 
                     //vytvoreni prikazu, ktery zkonvertuje txt to latexu
                     ProcessStartInfo psi = new ProcessStartInfo("pandoc", $"{pageName}.txt -f mediawiki -t latex --standalone -o {pageName}.tex");
-                    psi.WorkingDirectory = @"C:\Users\kukub\OneDrive\Plocha\pandoc";
+                    psi.WorkingDirectory = DataLayer.Path;
 
                     //zapnuti procesu a pockani nez dobehne
                     var process = Process.Start(psi);

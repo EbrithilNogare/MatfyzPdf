@@ -15,7 +15,17 @@ namespace MatfyzWikiToPdf
     /// </summary>
     public static class DataLayer
     {
-        private static string path = "C:\\Users\\kukub\\OneDrive\\Plocha\\pandoc";
+        /// <summary>
+        /// Cesta do slozky se souborama.
+        /// </summary>
+        public static string Path
+        {
+            get
+            {
+                string location = Assembly.GetExecutingAssembly().Location;
+                return System.IO.Path.GetDirectoryName(location);
+            }
+        }
 
         /// <summary>
         /// Nacte url ze souboru Data.txt.
@@ -23,7 +33,7 @@ namespace MatfyzWikiToPdf
         /// <returns></returns>
         public static string LoadUrl()
         {
-            string p = Path.Combine(path, "Data.txt");
+            string p = System.IO.Path.Combine(Path, "Data.txt");
 
             //kontrola existence souboru
             if (!File.Exists(p))
@@ -36,18 +46,6 @@ namespace MatfyzWikiToPdf
         }
 
         /// <summary>
-        /// Cesta do slozky se souborama.
-        /// </summary>
-        /*private static string path
-        {
-            get
-            {
-                string location = Assembly.GetExecutingAssembly().Location;
-                return Path.GetDirectoryName(location);
-            }
-        }*/
-
-        /// <summary>
         /// Napise text do souboru.
         /// </summary>
         /// <param name="fileName"></param>
@@ -55,12 +53,12 @@ namespace MatfyzWikiToPdf
         public static void WriteText(string fileName, string text)
         {
             //kontrola jestli je nazev souboru validni
-            if (fileName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+            if (fileName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) >= 0)
             {
                 throw new ApplicationException($"Neplatný název souboru '{fileName}'");
             }
 
-            File.WriteAllText(Path.Combine(path, StringHelper.RemoveDiacritics(fileName) + ".txt"), text);
+            File.WriteAllText(System.IO.Path.Combine(Path, StringHelper.RemoveDiacritics(fileName) + ".txt"), text);
         }
 
         /// <summary>
@@ -70,13 +68,13 @@ namespace MatfyzWikiToPdf
         public static string[] LoadPagesNames()
         {
             //kontrola jestli soubor existuje
-            if (!File.Exists(Path.Combine(path, "Pages.txt")))
+            if (!File.Exists(System.IO.Path.Combine(Path, "Pages.txt")))
             {
-                throw new ApplicationException("Soubor s jménama stránek 'Pages.txt' neexistuje. " + path);
+                throw new ApplicationException("Soubor s jménama stránek 'Pages.txt' neexistuje. " + Path);
             }
 
             //nacteni a vraceni textu
-            return File.ReadAllLines(Path.Combine(path, "Pages.txt"));
+            return File.ReadAllLines(System.IO.Path.Combine(Path, "Pages.txt"));
         }
 
         public static string RemoveDiacritics(string s)
@@ -105,7 +103,7 @@ namespace MatfyzWikiToPdf
         public static void DeleteFile(string fileName)
         {
             //vytvoreni cesty k souboru
-            string p = Path.Combine(path, fileName);
+            string p = System.IO.Path.Combine(Path, fileName);
             
             //pokud soubor existuje, tak bude smazan
             if (File.Exists(p))
@@ -120,7 +118,7 @@ namespace MatfyzWikiToPdf
         /// <param name="fileName"></param>
         public static void ClearTex(string fileName, ConditionList conditions)
         {
-            string p = Path.Combine(path, StringHelper.RemoveDiacritics(fileName.Trim()) + ".tex");
+            string p = System.IO.Path.Combine(Path, StringHelper.RemoveDiacritics(fileName.Trim()) + ".tex");
 
             //kontrola existence souboru
             if (!File.Exists(p))
@@ -189,7 +187,7 @@ namespace MatfyzWikiToPdf
 \end{document}");
 
             //vypsani do souboru
-            File.WriteAllText(Path.Combine(path, "Matfyzacka kucharka.tex"), sb.ToString());
+            File.WriteAllText(System.IO.Path.Combine(Path, "Matfyzacka kucharka.tex"), sb.ToString());
         }
 
         /// <summary>
@@ -198,7 +196,7 @@ namespace MatfyzWikiToPdf
         /// <returns></returns>
         public static ConditionList LoadConditions()
         {
-            string p = Path.Combine(path, "Conditions.xml");
+            string p = System.IO.Path.Combine(Path, "Conditions.xml");
 
             //kontrola existence souboru
             if (!File.Exists(p))
