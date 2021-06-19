@@ -1,0 +1,73 @@
+
+\geometry{
+	twoside,
+	outer=7mm,
+	inner=12mm,
+	top=10mm,	
+	bottom=15mm,
+	footskip=8mm,
+}
+
+\sloppy
+
+%\addtolength{\textwidth}{0.8in}
+%\addtolength{\textwidth}{10pt}
+%\addtolength{\textheight}{50pt}
+
+\setlength\parindent{1.5em}
+\setcounter{tocdepth}{2}
+
+\if\readyForPrint1
+	\usepackage[
+		b5,
+		cam,
+		pdftex,
+		center
+	]{crop}	
+\fi	
+
+\allsectionsfont{\sffamily\mdseries\larger}
+\subsubsectionfont{\it\sffamily\mdseries\larger}
+
+\newcommand\budovaInfo[6]{
+	\begin{center}
+	\begin{tabularx}{0.9\textwidth}{ |l|X| }
+		\hline
+	    \textsf{Adresa} & #1 \\ \hline
+	    \textsf{Osazenstvo} & #2 \\ \hline
+	    \textsf{Zajímavost} & #3 \\ \hline
+	    \textsf{Posluchárny} & #4 \\ \hline
+		\textsf{Kde se najíst} & #5 \\ \hline
+		\textsf{Kola} & #6 \\ \hline
+	\end{tabularx}
+	\end{center}
+	\noindent
+}
+\newcommand\budovaKratce[2]{
+	\begin{center}
+	\begin{tabularx}{0.9\textwidth}{ |l|X| }
+		\hline
+	    \textsf{Adresa} & #1 \\ \hline
+	    \textsf{Osazenstvo} & #2 \\ \hline
+	\end{tabularx}
+	\end{center}
+	\noindent
+}
+%adresa budovy~--~zkracena
+\newcommand\budovaAdresa[1]{
+	\begin{center}
+	\begin{tabularx}{0.9\textwidth}{ |l|X| }
+		\hline
+	    \textsf{Adresa budovy} & #1 \\ \hline
+	\end{tabularx}
+	\end{center}
+	\noindent
+}
+
+\newcommand{\subsubsubsection}[1]{
+	\vspace{5pt}
+	\noindent
+	\textbf{#1}\\
+}
+
+\def\ra{$\rightarrow$}
