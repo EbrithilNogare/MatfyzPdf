@@ -61,6 +61,19 @@ namespace MatfyzWikiToPdf
             File.WriteAllText(System.IO.Path.Combine(Path, StringHelper.RemoveDiacritics(fileName) + ".txt"), text);
         }
 
+
+        /// <summary>
+        /// Napise text do noveho souboru (smaze puvodni).
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="text"></param>
+        public static void WriteNewText(string fileName, string text)
+        {
+            if (File.Exists(fileName))
+                DeleteFile(fileName);
+            WriteText(fileName, text);
+        }
+
         /// <summary>
         /// Nacte jmena stranek ze souboru Pages.txt.
         /// </summary>

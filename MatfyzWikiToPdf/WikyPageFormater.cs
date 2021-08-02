@@ -13,42 +13,42 @@ namespace MatfyzWikiToPdf
         /// <returns></returns>
         public static string ClearHtml(string html)
         {
-            //start a konec textu
-            int start = html.IndexOf("<page>");
-            int end = html.IndexOf("</page>");
+            // trim page content
+            int startPage = html.IndexOf("<page>");
+            int endPage = html.IndexOf("</page>", startPage);
+            string text = html.Substring(startPage + "<page>".Length, endPage - startPage);
 
-            //vyseknuti texu
-            string text = html.Substring(start + 7, end - start);
-
-            //najiti konce hlavicky a vyseknuti textu od konce hlavicky
+            // find and trim header
             int endHead = text.IndexOf("}}");
-            string text2 = text.Substring(endHead + 4);
+            text = text.Substring(endHead + 4);
 
-            //smazani konce (koncove tagy)
-            int startBottom = text2.IndexOf("<sha1>");
-            string text3 = text2.Substring(0, startBottom);
+            // remove tail
+            int startBottom = text.IndexOf("<sha1>");
+            text = text.Substring(0, startBottom);
 
             //odstraneni textu mezi divem nebo spanem, pokud maji tridu 'noprint'
-            text3 = RemoveTextBettweenStrings(text3, "&lt;div class=\"noprint\"&gt;", "&lt;/div&gt;");
-            text3 = RemoveTextBettweenStrings(text3, "&lt;span class=\"noprint\"&gt;", "&lt;/span&gt;");
+            text = RemoveTextBettweenStrings(text, "&lt;div class=\"noprint\"&gt;", "&lt;/div&gt;");
+            text = RemoveTextBettweenStrings(text, "&lt;span class=\"noprint\"&gt;", "&lt;/span&gt;");
 
-            string text4 = text3;
-            //pokud je tam menicko (to zacina ====), tak se smaze
-            if (text3.Contains("===="))
+            // remove Table of contents
+            if (text.Contains("====Podkapitoly"))
+                text = text.Substring(0, text.IndexOf("====Podkapitoly") - 1);
+            if (text.Contains("==== Podkapitoly"))
+                text = text.Substring(0, text.IndexOf("==== Podkapitoly") - 1);
+
+            // remove double span image in table
+            string colspanEntity = "\n|colspan=\"2\"";
+            text = RemoveTextBettweenStrings(text, colspanEntity, "]]");
+
+            // remove all xml tags
+            while (text.Contains("&lt"))
             {
-                int startMenu = text3.IndexOf("====");
-                text4 = text3.Substring(0, startMenu - 1); //-1 => jeden znak ne => prvni '='
+                int tagStart = text.IndexOf("&lt;");
+                int tagEnd = text.IndexOf("&gt;", tagStart);
+                text = text.Remove(tagStart, tagEnd - tagStart + "&gt;".Length);
             }
 
-            //smazani vsech tagu, ty by se neprelozili do latexu
-            while (text4.Contains("&lt"))
-            {
-                int tagStart = text4.IndexOf("&lt");
-                int tagEnd = text4.IndexOf("&gt");
-                text4 = text4.Remove(tagStart, tagEnd - tagStart + 4); //+4 => 4 znaky => '&gt '
-            }
-
-            return text4;
+            return text;
         }
 
         /// <summary>
@@ -61,22 +61,11 @@ namespace MatfyzWikiToPdf
         /// <returns>Text s odstranenou casti mezi parametry.</returns>
         private static string RemoveTextBettweenStrings(string text, string startText, string endText)
         {
-            int startIndex = 0;
-            int endIndex = 1;
+            int startIndex;
+            int endIndex;
 
-            while (text.Contains(startText) && text.Contains(endText) && startIndex < endIndex)
-            {
-                //vypocitani zacatecniho a koncoveho indexu krajnich textu
-                startIndex = text.IndexOf(startText);
-                endIndex = text.IndexOf(endText);
-
-                //pokud tam ty texty jsou ve spravnem poradi, tak se smaze text mezi nimi
-                if (startIndex < endIndex)
-                {
-                    //odstraneni textu mezi hodnotamy z parametru
-                    text = text.Remove(startIndex, endIndex - startIndex + endText.Length);
-                }
-            }
+            while ((startIndex = text.IndexOf(startText)) != -1 && (endIndex = text.IndexOf(endText, startIndex)) != -1)
+                text = text.Remove(startIndex, endIndex - startIndex + endText.Length);
 
             return text;
         }

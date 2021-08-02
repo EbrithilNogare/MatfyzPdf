@@ -22,12 +22,9 @@ namespace MatfyzWikiToPdf
         {
             get
             {
-                if (client == null)
-                {
-                    client = new HttpClient();
-                }
-
-                return client;
+                if (this.client == null)
+                    this.client = new HttpClient();
+                return this.client;
             }
         }
 

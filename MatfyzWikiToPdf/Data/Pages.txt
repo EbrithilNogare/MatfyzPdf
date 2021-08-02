@@ -16,5 +16,6 @@ Hlavní_město_Praha
  Slovníček_pro_Nepražáky
  MHD
  Volný_čas
+ Lékařská_pomoc
 Recepty
 Plánky

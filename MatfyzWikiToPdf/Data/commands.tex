@@ -29,6 +29,9 @@
 \allsectionsfont{\sffamily\mdseries\larger}
 \subsubsectionfont{\it\sffamily\mdseries\larger}
 
+\NewCommandCopy{\oldparagraph}{\paragraph}
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}\\}
+
 \newcommand\budovaInfo[6]{
 	\begin{center}
 	\begin{tabularx}{0.9\textwidth}{ |l|X| }
